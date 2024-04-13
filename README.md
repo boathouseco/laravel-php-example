@@ -1,66 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# NextJS Implementation Example for Boathouse Customer Portal for Paddle
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This code will show you all parts necessary to implement Boathouse in your own application:
 
-## About Laravel
+- Boathouse API call to create a customer and retrieve their status.
+- Adding the pricing table to a marketing website (in anonymous mode).
+- Adding the pricing table to your app in order to allow user's to subscribe (checkout mode).
+- Adding PaddleJS to your app.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Prerequisites
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- A Paddle Account (can be a [sandbox account](https://sandbox-login.paddle.com/signup)),
+- at least one product and price configured in Paddle,
+- and a [Boathouse Account](https://www.boathouse.pro) with one plan referencing the Paddle price.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Configuration
 
-## Learning Laravel
+Copy .env.example to .env and enter your Boathouse Portal ID and Secret.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    BOATHOUSE_API="https://my.boathouse.pro/api/v1"
+    BOATHOUSE_PORTAL_ID=""
+    BOATHOUSE_SECRET=""
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Recommended Paddle and Boathouse Setup
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+For the purposes of this example it's recommend to create two products in Paddle.
 
-## Laravel Sponsors
+1. Name "Small" which has two prices: "Small-Monthly" and "Small-Annual"
+2. Name "Large" which has two prices: "Large-Monthly" and "Large-Annual"
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+In Boathouse proceed to the Plans page and add three plans. Set the first one to "Free".
+For the second choose "Small-Monthly", click "Customize" and select "Small-Annual" as the corresponding annual plan.
+Repeat for "Large-Monthly" and "Large-Annual".
 
-### Premium Partners
+## Architecture
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+All Boathouse examples follow the same architecture.
 
-## Contributing
+### Index Page
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+This simulates the logged-out state and will show the pricing table via an IFRAME (in anonymous mode).
 
-## Code of Conduct
+The createAccountUrl passed to the IFRAME url references the login page (see next heading).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Login Page
 
-## Security Vulnerabilities
+This page shows a button which simulates a login. For this example it will simply create a Paddle customer via the Boathouse API (using a random email address) and store the Paddle Customer ID in the browser's cookie. This cookie will imply the user is now logged in.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Here the Boathouse API is called using the email in order to create the customer.
 
-## License
+### Account Page
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Shows you the Paddle Customer ID you are currently logged-in as and the response that the Boathouse API is currently returning for your user.
+
+Here the Boathouse API is called using the Paddle Customer ID which in your app should be stored along side the user in order to facilitate the user changing their email (which if it was still used for the Boathouse API would create a new customer and lose the link to the existing Paddle customer record and so also to their active subscriptions).
+
+If you have not subscribed this page will show you the pricing table (in checkout mode) which will allow you to subscribe to one of the configured plans.
+
+This account page requires PaddleJS to be installed and configured in order for the checkout to succeed. You will need to replace the token with your own from the Paddle account. If you are moving to production remove the first line which sets the environment to "sandbox".
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script type="text/javascript">
+    Paddle.Environment.set("sandbox");
+    Paddle.Initialize({
+        token: '<YOUR-PADDLE-CLIENT-TOKEN>',
+        eventCallback: (e) => {
+            if (e.name == "checkout.completed") 
+                location.href = "processing?pids=" + e.data.items.map(x => x.price_id).join(",");
+        }
+    });
+    </script>
+
+### Processing Page
+
+Paddle may take a moment to process the checkout. As Boathouse works directly with Paddle data the example redirects to this processing page to await the successful API result containing the price id that was just purchased.

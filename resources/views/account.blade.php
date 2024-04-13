@@ -118,7 +118,7 @@
                                             </div>
 
                                             <div class="border border-red-500 rounded-xl p-5 bg-red-50 text-base">
-                                                <div class="text-lg font-bold">Use these test credit cards for the checkout</div>
+                                                <div class="text-lg font-bold">Use this test credit card for the checkout</div>
 
                                                 <ul>
                                                     <li>Card: 4000 0566 5566 5556</li>
