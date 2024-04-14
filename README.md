@@ -7,19 +7,28 @@ This code will show you all parts necessary to implement Boathouse in your own a
 - Adding the pricing table to your app in order to allow user's to subscribe (checkout mode).
 - Adding PaddleJS to your app.
 
-## Prerequisites
+## How to use
 
-- A Paddle Account (can be a [sandbox account](https://sandbox-login.paddle.com/signup)),
-- at least one product and price configured in Paddle,
-- and a [Boathouse Account](https://www.boathouse.pro) with one plan referencing the Paddle price.
-
-## Configuration
+### Configuration
 
 Copy .env.example to .env and enter your Boathouse Portal ID and Secret.
 
     BOATHOUSE_API="https://my.boathouse.pro/api/v1"
     BOATHOUSE_PORTAL_ID=""
     BOATHOUSE_SECRET=""
+
+### Prerequisites
+
+- A Paddle Account (can be a [sandbox account](https://sandbox-login.paddle.com/signup)),
+- at least one product and price configured in Paddle,
+- and a [Boathouse Account](https://www.boathouse.pro) with one plan referencing the Paddle price.
+
+### Run 
+
+- Copy .env.example to .env 
+- Run ```npm run start``` 
+- Run ```php artisan serve``` 
+
 
 ## Recommended Paddle and Boathouse Setup
 
