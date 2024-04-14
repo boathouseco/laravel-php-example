@@ -74,7 +74,7 @@
                             </div>
 
                              <div class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
-                                    <iframe src="https://my.boathouse.pro/api/v1/pricingtableiframe?p=7844a538-d99e-4dee-b296-08dc57f5b69a&l={{ url("/login") }}&s=https%3A%2F%2Fmy.boathouse.pro%2Fcss%2Fpricing-table-default.css" 
+                                    <iframe src="https://my.boathouse.pro/api/v1/pricingtableiframe?p=7844a538-d99e-4dee-b296-08dc57f5b69a&l={{ urlencode(url("/login")) }}&s=https%3A%2F%2Fmy.boathouse.pro%2Fcss%2Fpricing-table-default.css" 
                                         frameBorder="0" 
                                         style="width:100%;height:500px"></iframe>
 
